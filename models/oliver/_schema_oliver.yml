@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: oliver_dim_customer
+    description: "Customer dimension table containing customer details such as name, email, phone, and state."
+    columns:
+      - name: cust_key
+        description: "Primary key for the customer dimension."
+        tests:
+          - unique
+          - not_null
+      - name: customerid
+        description: "Natural key from the source system identifying each customer."
+
+  - name: oliver_dim_date
+    description: "Date dimension containing calendar and time attributes."
+    columns:
+      - name: date_key
+        description: "Primary key for the date dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: oliver_dim_product
+    description: "Product dimension with product details and pricing information."
+    columns:
+      - name: product_key
+        description: "Primary key for the product dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: oliver_dim_store
+    description: "Store dimension containing store location and identification details."
+    columns:
+      - name: store_key
+        description: "Primary key for the store dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: oliver_dim_employee
+    description: "Employee dimension table containing employee personal and job information."
+    columns:
+      - name: employee_key
+        description: "Primary key for the employee dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_sales
+    description: "Fact table containing individual sales transactions with links to each dimension."
+    columns:
+      - name: cust_key
+        description: "Foreign key referencing the customer dimension."
+      - name: date_key
+        description: "Foreign key referencing the date dimension."
+      - name: store_key
+        description: "Foreign key referencing the store dimension."
+      - name: product_key
+        description: "Foreign key referencing the product dimension."
+      - name: employee_key
+        description: "Foreign key referencing the employee dimension."
+      - name: quantity
+        description: "Quantity of items sold."
+      - name: unit_price
+        description: "Unit price of the product sold."
+      - name: dollars_sold
+        description: "Calculated total sales dollars for the transaction."
