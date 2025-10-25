@@ -47,6 +47,8 @@ models:
         tests:
           - unique
           - not_null
+      - name: employeeid
+        description: "Natural employee identifier used for fact joins."
 
   - name: fact_sales
     description: "Fact table containing individual sales transactions with links to each dimension."
@@ -67,3 +69,56 @@ models:
         description: "Unit price of the product sold."
       - name: dollars_sold
         description: "Calculated total sales dollars for the transaction."
+
+  # NEW: staging model for certifications
+  - name: stg_employee_certifications
+    description: "Staging table for employee certifications parsed from JSON payloads in the landing table."
+    columns:
+      - name: employee_id
+        description: "Natural employee identifier from the landing source."
+      - name: first_name
+        description: "Employee first name from landing."
+      - name: last_name
+        description: "Employee last name from landing."
+      - name: email
+        description: "Employee email from landing."
+      - name: certification_name
+        description: "Certification name parsed from certification_json."
+        tests: [not_null]
+      - name: certification_cost
+        description: "Certification cost parsed from certification_json."
+      - name: certification_awarded_date
+        description: "Date the certification was awarded (DATE)."
+      - name: award_date_key
+        description: "YYYYMMDD integer used to join to oliver_dim_date."
+        tests: [not_null]
+
+  # NEW: fact table for certifications
+  - name: fact_certification
+    description: |
+      Employee Certification Fact.
+      Grain: one row per employee × certification × award date.
+    columns:
+      - name: employee_key
+        description: "FK to oliver_dim_employee."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('oliver_dim_employee')
+              field: employee_key
+      - name: date_key
+        description: "FK to oliver_dim_date."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('oliver_dim_date')
+              field: date_key
+      - name: certification_name
+        description: "Name of the certification awarded."
+        tests: [not_null]
+      - name: certification_cost
+        description: "Cost of the certification."
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [employee_key, date_key, certification_name]

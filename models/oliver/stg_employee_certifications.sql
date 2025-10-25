@@ -7,7 +7,7 @@ with src as (
         last_name,
         email,
         certification_json
-    from {{ source('OLIVER_DW_SOURCE','EMPLOYEE_CERTIFICATIONS') }}
+    from {{ source('OLIVER_DW_SOURCE','employee_certifications') }}
 ),
 
 parsed as (
@@ -30,4 +30,4 @@ parsed as (
     from src
 )
 
-select * from parsed;
+select * from parsed
