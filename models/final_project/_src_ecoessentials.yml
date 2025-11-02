@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: eco_transactional
+    database: GROUP6PROJECT
+    schema: ECOESSENTIALS_TRANSACTIONAL_DB
+    tables:
+      - name: CUSTOMER
+      - name: ORDERS
+      - name: ORDER_LINE
+      - name: PRODUCT
+      - name: PROMOTIONAL_CAMPAIGN
+
+  - name: eco_marketing
+    database: GROUP6PROJECT
+    schema: ECOESSENTIALS_DW_SOURCE
+    tables:
+      - name: MARKETING_EMAILS
+      - name: SALESFORCE_MARKETING_EMAILS
