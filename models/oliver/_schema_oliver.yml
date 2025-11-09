@@ -29,6 +29,16 @@ models:
         tests:
           - unique
           - not_null
+      - name: product_name
+        description: "The name of the product"
+        tests:
+          - accepted_values:
+              values:
+                - "Small Popcorn"
+                - "Marshmallows"
+                - "Small Coffee"
+                - "Gummy Bears"
+                - "Chocolate Bar"
 
   - name: oliver_dim_store
     description: "Store dimension containing store location and identification details."
