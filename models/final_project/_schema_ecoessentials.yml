@@ -49,10 +49,8 @@ models:
         description: "the varchar description of the type of email event."
         tests:
           - accepted_values:
-              values:
-                - "OPEN"
-                - "CLICK"
-                - "SENT"
+            arguments:
+              values: ["OPEN","CLICK","SENT"]
 
   - name: dim_order
     description: "dimension table for order information."
@@ -75,13 +73,8 @@ models:
         description: "the varchar product name."
         tests:
           - accepted_values:
-              values:
-                - "storage"
-                - "pot"
-                - "utensil"
-                - "accessory"
-                - "cutting_board"
-                - "pan"
+            arguments:
+              values: ["storage","pot","utensil","accessory","cutting_board","pan"]
   - name: fact_email_events
     description: |
       Email Events Fact.
