@@ -11,11 +11,11 @@ select
     c.issue_type,
     c.resolution_status
 from {{ ref('stg_customer_service_interactions') }} c
-inner join {{ ref('dim_customer') }} cu
+inner join {{ ref('dim_customer_insurance') }} cu
     on c.customer_first_name = cu.firstname
     and c.customer_last_name = cu.lastname
 inner join {{ ref('dim_agent') }} a
     on c.agent_first_name = a.firstname
     and c.agent_last_name = a.lastname
-inner join {{ ref('dim_date') }} d
+inner join {{ ref('dim_date_insurance') }} d
     on d.date_key = c.interaction_date
