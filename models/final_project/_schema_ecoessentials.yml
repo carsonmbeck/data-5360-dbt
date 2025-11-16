@@ -1,0 +1,157 @@
+version: 2
+
+models:
+  - name: dim_campaign_email
+    description: "campaign email dimension table that contains email id and name"
+    columns:
+      - name: email_key
+        description: "Primary key for the campaign email dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_campaign
+    description: "campaign dimension containing information about the marketing campaign."
+    columns:
+      - name: campaign_key
+        description: "Primary key for the campaign dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_customer
+    description: "Customer dimension with customer details."
+    columns:
+      - name: customer_key
+        description: "Primary key for the customer dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: "Date dimension containing date information."
+    columns:
+      - name: date_key
+        description: "Primary key for the date dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_event_type
+    description: "dimension table for event types for email events."
+    columns:
+      - name: email_event_key
+        description: "Primary key for individual email event."
+        tests:
+          - unique
+          - not_null
+      - name: event_type
+        description: "the varchar description of the type of email event."
+        tests:
+          - accepted_values:
+              values:
+                - "OPEN"
+                - "CLICK"
+                - "SENT"
+
+  - name: dim_order
+    description: "dimension table for order information."
+    columns:
+      - name: order_key
+        description: "Foreign key referencing the customer dimension."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    description: "dimension table for product information."
+    columns:
+      - name: product_key
+        description: "key for each product."
+        tests:
+          - unique
+          - not_null
+      - name: product_type
+        description: "the varchar product name."
+        tests:
+          - accepted_values:
+              values:
+                - "storage"
+                - "pot"
+                - "utensil"
+                - "accessory"
+                - "cutting_board"
+                - "pan"
+  - name: fact_email_events
+    description: |
+      Email Events Fact.
+      Grain: one row per email event × customer × date x campaign.
+    columns:
+      - name: email_event_key
+        description: "FK to dim_event_type."
+        tests:
+          - relationships:
+              to: ref('dim_event_type')
+              field: email_event_key
+      - name: date_key
+        description: "FK to dim_date."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: email_key
+        description: "FK to dim_campaign_email."
+        tests: 
+          - relationships:
+              field: email_key
+              to: ref('dim_campaign_email')
+      - name: customer_key
+        description: "FK to dim_customer."
+        tests: 
+          - relationships:
+              field: customer_key
+              to: ref('dim_customer')
+      - name: campaign_key
+        description: "FK to dim_campaign."
+        tests: 
+          - relationships:
+              field: campiagn_key
+              to: ref('dim_campaign')
+
+  - name: fact_sales
+    description: |
+      Sales Fact.
+      Grain: one row per product × customer × date x date x order.
+    columns:
+      - name: product_key
+        description: "FK to dim_product."
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: date_key
+        description: "FK to dim_date."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: customer_key
+        description: "FK to dim_customer."
+        tests: 
+          - relationships:
+              field: customer_key
+              to: ref('dim_customer')
+      - name: customer_key
+        description: "FK to dim_customer."
+        tests: 
+          - relationships:
+              field: customer_key
+              to: ref('dim_customer')
+      - name: order_key
+        description: "FK to dim_order."
+        tests: 
+          - relationships:
+              field: order_key
+              to: ref('dim_order')
