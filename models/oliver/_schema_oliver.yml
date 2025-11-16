@@ -60,7 +60,7 @@ models:
       - name: employeeid
         description: "Natural employee identifier used for fact joins."
 
-  - name: fact_sales
+  - name: fact_sales_oliver
     description: "Fact table containing individual sales transactions with links to each dimension."
     columns:
       - name: cust_key
