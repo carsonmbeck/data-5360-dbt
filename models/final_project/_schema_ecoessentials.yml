@@ -143,12 +143,6 @@ models:
           - relationships:
               field: customer_key
               to: ref('dim_customer')
-      - name: customer_key
-        description: "FK to dim_customer."
-        tests: 
-          - relationships:
-              field: customer_key
-              to: ref('dim_customer')
       - name: order_key
         description: "FK to dim_order."
         tests: 
